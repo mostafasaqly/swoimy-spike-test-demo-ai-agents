@@ -3,6 +3,12 @@
  * Amounts are numbers in the invoice currency (e.g. 10.5 = 10.50).
  */
 
+function validateDiscountPercent(percent) {
+  if (percent < 0 || percent > 100) {
+    throw new RangeError('discount percent must be between 0 and 100');
+  }
+}
+
 /** Price of one line: unit price times quantity. */
 export function lineTotal(item) {
   return item.unitPrice * item.quantity;
@@ -15,10 +21,12 @@ export function subtotal(items) {
 
 /** Takes `percent` off `amount`. */
 export function applyDiscount(amount, percent) {
+  validateDiscountPercent(percent);
   return amount - (amount * percent) / 100;
 }
 
 /** What the customer pays. */
 export function invoiceTotal(items, { discountPercent = 0 } = {}) {
+  validateDiscountPercent(discountPercent);
   return applyDiscount(subtotal(items), discountPercent);
 }

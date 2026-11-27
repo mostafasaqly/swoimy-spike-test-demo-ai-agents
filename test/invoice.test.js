@@ -26,9 +26,13 @@ test('applyDiscount rejects discount percentages outside 0 to 100', () => {
   assert.throws(() => applyDiscount(100, 101), RangeError);
 });
 
-test('invoiceTotal applies the discount to the subtotal', () => {
+test('invoiceTotal applies the discount to the subtotal before tax', () => {
   assert.equal(invoiceTotal(items), 100);
-  assert.equal(invoiceTotal(items, { discountPercent: 25 }), 75);
+  assert.equal(invoiceTotal(items, { discountPercent: 15 }), 85);
+});
+
+test('invoiceTotal supports a full 100 percent discount', () => {
+  assert.equal(invoiceTotal([{ unitPrice: 100, quantity: 1 }], { discountPercent: 100 }), 0);
 });
 
 test('invoiceTotal rejects discount percentages outside 0 to 100', () => {

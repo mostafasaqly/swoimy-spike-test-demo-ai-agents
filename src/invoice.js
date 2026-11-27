@@ -25,7 +25,16 @@ export function applyDiscount(amount, percent) {
   return amount - (amount * percent) / 100;
 }
 
-/** Format a monetary amount for display in a locale. */
+/**
+ * Format a monetary amount for display in a locale.
+ *
+ * @param {number} amount - The monetary amount to format.
+ * @param {string} currency - The ISO 4217 currency code.
+ * @param {string} locale - The locale to use for formatting.
+ * @returns {string} The formatted currency string.
+ * @throws {RangeError} If the locale or currency code is malformed.
+ * @throws {TypeError} If the currency is missing.
+ */
 export function formatCurrency(amount, currency, locale) {
   return new Intl.NumberFormat(locale, {
     style: 'currency',

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { applyDiscount, invoiceTotal, lineTotal, subtotal } from '../src/invoice.js';
+import { applyDiscount, formatCurrency, invoiceTotal, lineTotal, subtotal } from '../src/invoice.js';
 
 const items = [
   { name: 'Keyboard', unitPrice: 40, quantity: 2 },
@@ -24,6 +24,15 @@ test('applyDiscount takes a percentage off', () => {
 test('applyDiscount rejects discount percentages outside 0 to 100', () => {
   assert.throws(() => applyDiscount(100, -1), RangeError);
   assert.throws(() => applyDiscount(100, 101), RangeError);
+});
+
+test('formatCurrency formats USD amounts with the locale', () => {
+  assert.equal(formatCurrency(1234.5, 'USD', 'en-US'), '$1,234.50');
+  assert.equal(formatCurrency(10.5, 'USD', 'de-DE'), '10,50\u00A0$');
+});
+
+test('formatCurrency formats EGP amounts with the locale', () => {
+  assert.equal(formatCurrency(1234.5, 'EGP', 'en-US'), 'EGP\u00A01,234.50');
 });
 
 test('invoiceTotal applies the discount to the subtotal before tax', () => {

@@ -25,6 +25,16 @@ export function applyDiscount(amount, percent) {
   return amount - (amount * percent) / 100;
 }
 
+/** Format a monetary amount for display in a locale. */
+export function formatCurrency(amount, currency, locale) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
 /** What the customer pays. */
 export function invoiceTotal(items, { discountPercent = 0 } = {}) {
   validateDiscountPercent(discountPercent);
